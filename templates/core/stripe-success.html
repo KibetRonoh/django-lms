@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load course_tags %}
+{% block content %}
+
+    <!-- Start breadcrumb Area -->
+    <div class="rbt-breadcrumb-default ptb--100 ptb_md--50 ptb_sm--30 bg-gradient-1">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-inner text-center">
+                        <h2 class="title">Checkout</h2>
+                        <ul class="page-list">
+                            <li class="rbt-breadcrumb-item"><a href="index.html">Home</a></li>
+                            <li>
+                                <div class="icon-right"><i class="feather-chevron-right"></i></div>
+                            </li>
+                            <li class="rbt-breadcrumb-item active">Checkout</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Breadcrumb Area -->
+
+    <div class="checkout_area bg-color-white rbt-section-gap">
+        <div class="container">
+            <div class="row g-5 checkout-form">
+                <div class="col-lg-7">
+                    <div class="checkout-content-wrapper">
+                        <!-- Billing Address -->
+                        <div id="billing-form">
+                            <h4 class="checkout-title">Your Order</h4>
+                            <div class="row">
+                                <div class="row pl--50 pl_md--0 pl_sm--0">
+                                    <!-- Cart Total -->
+                                    <div class="col-12 mb--60">
+                                        <div class="checkout-cart-total">
+                                            <h4>Product <span>Total</span></h4>
+                                            <ul>
+                                                <li>{{course.title}} <span>${{course.price}}</span></li>
+                                                <li>Discount   <span>{{course.discount}}% Off</span></li>
+                                            </ul>
+                                            <p>Sub Total <span>${% discount_calculation course.price course.discount %}</span></p>
+                                            <p>Shipping Fee <span>$0.00</span></p>
+                                            <h4 class="mt--30">Grand Total <span>${% discount_calculation course.price course.discount %}</span></h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-5">
+                    <div class="row pl--50 pl_md--0 pl_sm--0">
+                        <!-- Payment Method -->
+                        <div class="col-12 mb--60">
+                            <h4 class="checkout-title">Payment Method</h4>
+                            <div class="checkout-payment-method">
+                                <div class="single-method">
+                                    <form action="{% url 'create-checkout-session' course.slug%}" method="POST">
+                                        {% csrf_token %}
+                                        <div class="checkout-content-wrapper">
+                                            <!-- Billing Address -->
+                                            <div>
+                                                <h4 class="checkout-title">Billing Address</h4>
+                                                <div class="row">
+                                                    <div class="col-md-6 col-12 mb--20">
+                                                        <input type="text" hidden="hidden"  name="course" value="{{course.slug}}">
+                                                        <input type="text" hidden="hidden"  name="user" value="{{user.request}}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <button type="submit" id="checkout-button">Checkout</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="rbt-separator-mid">
+        <div class="container">
+            <hr class="rbt-separator m-0">
+        </div>
+    </div>
+
+{% endblock %}

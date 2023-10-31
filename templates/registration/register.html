@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content%}
+    <div class="rbt-elements-area bg-color-white rbt-section-gap">
+        <div class="container mb-11">
+            <div class="row gx-0">
+                <div class="col-md-7 col-xl-6 mx-auto">
+                    <div class="rbt-contact-form contact-form-style-1 max-width-auto">
+                        <h3 class="title">Register</h3>
+                        {% include 'partials/_alerts.html' %}
+                        <form class="max-width-auto" method="post" action="{% url 'register' %}" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <input name="email" type="email" required />
+                                <label>Email address *</label>
+                                <span class="focus-border"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <input name="username" type="text" required>
+                                <label>Username *</label>
+                                <span class="focus-border"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <input name="first_name" type="text" required>
+                                <label>First Name *</label>
+                                <span class="focus-border"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <input name="last_name" type="text" required>
+                                <label>Last Name *</label>
+                                <span class="focus-border"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <input name="password" type="password" required>
+                                <label>Password *</label>
+                                <span class="focus-border"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <input name="password2" type="password" required>
+                                <label>Confirm Password *</label>
+                                <span class="focus-border"></span>
+                            </div>
+
+                            <div class="form-submit-group">
+                                <button type="submit" class="rbt-btn btn-md btn-gradient hover-icon-reverse w-100">
+                                    <span class="icon-reverse-wrapper">
+                                        <span class="btn-text">Register</span>
+                                    <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+                                    <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+                                    </span>
+                                </button>
+                            </div>
+                            <div class="col-lg-10">
+                                <div class="rbt-lost-password text-end">
+                                    Already have an account? <a class="rbt-btn-link" href="{%url 'login' %}">Login Here</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

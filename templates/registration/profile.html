@@ -1,0 +1,269 @@
+{% extends 'base.html' %}
+{% block content %}
+ <!-- Start Card Style -->
+    <div class="rbt-dashboard-area rbt-section-overlayping-top rbt-section-gapBottom">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                     <!-- Start Dashboard Top  -->
+                    <div class="rbt-dashboard-content-wrapper">
+                        <div class="tutor-bg-photo bg_image bg_image--24 height-350"></div>
+                            <!-- Start Tutor Information  -->
+                            <div class="rbt-tutor-information">
+                                <div class="rbt-tutor-information-left">
+                                    <div class="thumbnail rbt-avatars size-lg">
+                                        {% if user.user_image %}
+                                        <img src="{{user.user_image.url}}" alt="Instructor">
+                                        {% else %}
+                                        <img src="/media/users/user.png" alt="Instructor">
+                                        {% endif %}
+                                    </div>
+                                    <div class="tutor-content">
+                                        <h5 class="title">{{user.first_name}} {{user.last_name}}</h5>
+                                        <ul class="rbt-meta rbt-meta-white mt--5">
+                                            <li><i class="feather-book"></i>{{my_course_count}} Course(s) Enroled</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                {% if user.is_instructor == True %}
+                                <div class="rbt-tutor-information-right">
+                                    <div class="tutor-btn">
+                                        <a class="rbt-btn btn-md hover-icon-reverse" href="/admin/">
+                                            <span class="icon-reverse-wrapper">
+                                            <span class="btn-text">Go to Instructors Dashboard </span>
+                                            <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+                                            <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+                                            </span>
+                                        </a>
+                                    </div>
+                                </div>
+                                {% else %}
+                                <div class="rbt-tutor-information-right">
+                                    <div class="tutor-btn">
+                                        <a class="rbt-btn btn-md hover-icon-reverse" href="{% url 'become-instructor' %}">
+                                            <span class="icon-reverse-wrapper">
+                                            <span class="btn-text">Become an Instructor</span>
+                                            <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+                                            <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+                                            </span>
+                                        </a>
+                                    </div>
+                                </div>
+                                {% endif %}
+                            </div>
+                            <!-- End Tutor Information  -->
+                    </div>
+                    <!-- End Dashboard Top  -->
+
+                    <div class="row g-5">
+                        <div class="col-lg-3">
+                            <!-- Start Dashboard Sidebar  -->
+                            <div class="rbt-default-sidebar sticky-top rbt-shadow-box rbt-gradient-border">
+                                <div class="inner">
+                                    <div class="content-item-content">
+
+                                        <div class="rbt-default-sidebar-wrapper">
+                                            <div class="section-title mb--20">
+                                                <h6 class="rbt-title-style-2">Welcome, {{user.first_name}} {{ user.last_name }}</h6>
+                                            </div>
+                                            <nav class="mainmenu-nav">
+                                                <ul class="dashboard-mainmenu rbt-default-sidebar-list">
+                                                    <li><a href="{% url 'dashboard' %}"><i class="feather-home"></i><span>Dashboard</span></a></li>
+                                                    <li><a href="{% url 'student-details' %}"><i class="feather-user"></i><span>My Profile</span></a></li>
+                                                    <li><a href="{% url 'my-courses' %}"><i class="feather-book-open"></i><span>Enrolled Courses</span></a></li>
+                                                    <li><a href="{% url 'my-reviews' %}"><i class="feather-star"></i><span>Reviews</span></a></li>
+                                                </ul>
+                                            </nav>
+
+                                            <div class="section-title mt--40 mb--20">
+                                                <h6 class="rbt-title-style-2">User</h6>
+                                            </div>
+
+                                            <nav class="mainmenu-nav">
+                                                <ul class="dashboard-mainmenu rbt-default-sidebar-list">
+                                                    <li><a href="{% url 'profile' %}"><i class="feather-settings"></i><span>Settings</span></a></li>
+                                                    <li>
+                                                        <a href="javascript:{document.getElementById('logout').submit()}">
+                                                            <i class="feather-log-out"></i>
+                                                            <span>Logout</span>
+                                                        </a>
+                                                        <form action="{% url 'logout' %}" method="POST" id="logout">
+                                                            {% csrf_token %}
+                                                            <input type="hidden">
+                                                        </form>
+                                                    </li>
+                                                </ul>
+                                            </nav>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End Dashboard Sidebar  -->
+                        </div>
+
+                        <div class="col-lg-9">
+                            <!-- Start Instructor Profile  -->
+                            <div class="rbt-dashboard-content bg-color-white rbt-shadow-box">
+                                <div class="content">
+
+                                    <div class="section-title">
+                                        <h4 class="rbt-title-style-3">Settings</h4>
+                                    </div>
+
+                                    {% include 'partials/_alerts.html' %}
+                                    <div class="advance-tab-button mb--30">
+                                        <ul class="nav nav-tabs tab-button-style-2 justify-content-start" id="settinsTab-4" role="tablist">
+                                            <li role="presentation">
+                                                <a href="#" class="tab-button active" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" role="tab" aria-controls="profile" aria-selected="true">
+                                                    <span class="title">Profile</span>
+                                                </a>
+                                            </li>
+
+                                            <li role="presentation">
+                                                <a href="#" class="tab-button" id="social-tab" data-bs-toggle="tab" data-bs-target="#social" role="tab" aria-controls="social" aria-selected="false">
+                                                    <span class="title">Social Share</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="tab-content">
+                                        <div class="tab-pane fade active show" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                                            <!-- Start Profile Row  -->
+                                            <form method="post" enctype="multipart/form-data" action="{% url 'profile_update' %}" class="rbt-profile-row rbt-default-form row row--15">
+                                                {% csrf_token %}
+                                                <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+                                                    <div class="rbt-form-group">
+                                                        <label for="firstname">First Name</label>
+                                                        <input id="firstname" type="text" value="{{user.first_name}}" name="first_name" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+                                                    <div class="rbt-form-group">
+                                                        <label for="lastname">Last Name</label>
+                                                        <input id="lastname" type="text" value="{{ user.last_name }}" name="last_name" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+                                                    <div class="rbt-form-group">
+                                                        <label for="username">User Name</label>
+                                                        <input id="username" type="text" value="{{ user.username }}" name="username" readonly>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+                                                    <div class="rbt-form-group">
+                                                        <label for="email">Email</label>
+                                                        <input id="email" type="tel" value="{{ user.email }}" name="email" readonly>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+                                                    <div class="rbt-form-group">
+                                                        <label for="password">Password</label>
+                                                        <input id="password" type="password" value="" name="password">
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-6">
+                                                    <div class="rbt-form-group">
+                                                        <label for="age">age</label>
+                                                        <input id="age" type="text" value="{{ user.age }}" name="age">
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <label for="bio">Bio</label>
+                                                    <div class="form-group">
+                                                        <textarea id="bio" name="bio" rows="8" required>{{ user.bio }}</textarea>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+                                                    <div class="rbt-form-group">
+                                                        <label>Profile Picture (Dimension: 415 x 555)</label>
+                                                            <div style="text-align: center;">
+                                                                <label for="images" class="drop-container rbt-custom-file-upload">
+                                                                    <span class="mb--0 h5">Drop files here</span>
+                                                                    <hr>
+                                                                    or
+                                                                    <hr>
+                                                                    <input type="file" id="images" accept="image/*" value="{{user.user_image.url}}" name="user_image" required>
+                                                                </label>
+                                                            </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 mt--20">
+                                                    <button type="submit" class="rbt-btn btn-md btn-gradient hover-icon-reverse w-100">
+                                                        <span class="icon-reverse-wrapper">
+                                                            <span class="btn-text">Update Info</span>
+                                                        <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+                                                        <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+                                                        </span>
+                                                    </button>
+                                                </div>
+                                            </form>
+                                            <!-- End Profile Row  -->
+                                        </div>
+
+                                        <div class="tab-pane fade" id="social" role="tabpanel" aria-labelledby="social-tab">
+                                            <!-- Start Profile Row  -->
+                                            <form method="post" action="{% url 'socials' %}" class="rbt-profile-row rbt-default-form row row--15">
+                                                {% csrf_token %}
+                                                <div class="col-12">
+                                                    <div class="rbt-form-group">
+                                                        <input hidden="hidden" type="text" name="user" value="{{user.id}}">
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-12">
+                                                    <div class="rbt-form-group">
+                                                        <label for="facebook"> Facebook</label>
+                                                        <input id="facebook" type="text" value="{{user.socials.facebook}}" name="facebook">
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-12">
+                                                    <div class="rbt-form-group">
+                                                        <label for="x"> X</label>
+                                                        <input id="x" type="text"  name="x">
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-12">
+                                                    <div class="rbt-form-group">
+                                                        <label for="youtube">Youtube</label>
+                                                        <input id="youtube" type="text" name="youtube">
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-12">
+                                                    <div class="rbt-form-group">
+                                                        <label for="instagram"> Instagram</label>
+                                                        <input id="instagram" type="text" name="instagram">
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-12 mt--20">
+                                                    <button type="submit" class="rbt-btn btn-md btn-gradient hover-icon-reverse w-100">
+                                                        <span class="icon-reverse-wrapper">
+                                                            <span class="btn-text">Update Info</span>
+                                                        <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+                                                        <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+                                                        </span>
+                                                    </button>
+                                                </div>
+                                            </form>
+                                            <!-- End Profile Row  -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End Instructor Profile  -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Card Style -->
+
+{% endblock %}

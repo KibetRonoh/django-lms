@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+ <!-- Start breadcrumb Area -->
+    <div class="rbt-breadcrumb-default ptb--100 ptb_md--50 ptb_sm--30 bg-gradient-1">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-inner text-center">
+                        <h2 class="title">Instructor</h2>
+                        <ul class="page-list">
+                            <li class="rbt-breadcrumb-item"><a href="index.html">Home</a></li>
+                            <li>
+                                <div class="icon-right"><i class="feather-chevron-right"></i></div>
+                            </li>
+                            <li class="rbt-breadcrumb-item active">Instructor</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Breadcrumb Area -->
+
+    <div class="rbt-team-area bg-color-extra2 rbt-section-gap">
+        <div class="container">
+            <div class="row g-5">
+                <!-- Start Single Team  -->
+                {% for instructor in instructors %}
+                <div class="col-lg-3 col-md-6 col-12">
+                    <div class="rbt-team team-style-default style-three small-layout rbt-hover">
+                        <div class="inner">
+                            <div class="thumbnail"><img src="{{instructor.user_image}}" height="70" width="100" alt="Corporate Template"></div>
+                            <div class="content">
+                                <h2 class="title">{{instructor.first_name}} {{instructor.last_name}}</h2>
+                                <h6 class="subtitle theme-gradient">{{instructor.occupation}}</h6>
+                                <div class="social-share-wrapper">
+                                    <span class="rbt-short-title d-block"></span>
+                                    <ul class="social-icon social-default transparent-with-border justify-content-center mt--20">
+                                        <li><a href="{{setting.facebook}}">
+                                                <i class="feather-facebook"></i>
+                                            </a>
+                                        </li>
+                                        <li><a href="{{setting.x}}">
+                                                <i class="feather-x"></i>
+                                            </a>
+                                        </li>
+                                        <li><a href="{{setting.youtube}}">
+                                                <i class="feather-youtube"></i>
+                                            </a>
+                                        </li>
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                <!-- End Single Team  -->
+
+            </div>
+
+            <div class="row">
+                <div class="col-lg-11 mt--60">
+                     <nav>
+                         {% if instructors.has_other_pages %}
+                         <ul class="rbt-pagination">
+                             {% if instructors.has_previous %}
+                             <li><a href="?page={{instructors.previous_page_number}}" aria-label="Previous"><i class="feather-chevron-left"></i></a></li>
+                             {% else %}
+
+                             {% endif %}
+                             {% for i in instructors.paginator.page_range %}
+                                 {% if instructors.number == i %}
+                                    <li class="active"><a>{{i}}</a></li>
+                                 {% else %}
+                                    <li><a href="?page={{i}}">{{i}}</a></li>
+                                 {% endif %}
+                             {% endfor %}
+                             {% if instructors.has_next %}
+                                <li><a href="?page={{instructors.next_page_number}}" aria-label="Next"><i class="feather-chevron-right"></i></a></li>
+                             {% else %}
+                                <li><a href="#" aria-label="Next"><i class="feather-chevron-right"></i></a></li>
+                             {% endif %}
+                         </ul>
+                         {% endif %}
+                     </nav>
+                 </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

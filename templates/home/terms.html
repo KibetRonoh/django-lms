@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="rbt-overlay-page-wrapper">
+        <div class="breadcrumb-image-container breadcrumb-style-max-width">
+            <div class="breadcrumb-image-wrapper">
+                <img src="assets/images/bg/bg-image-10.jpg" alt="Education Images">
+            </div>
+            <div class="breadcrumb-content-top text-center">
+                <h1 class="title">Terms and Condition</h1>
+                <p class="mb--20">PyStudy Course Terms and Condition.</p>
+            </div>
+        </div>
+
+        <div class="rbt-putchase-guide-area breadcrumb-style-max-width rbt-section-gapBottom">
+            <div class="rbt-article-content-wrapper">
+                <div class="content">
+                    {% for term in terms %}
+                    <h4>{{term.heading}}</h4>
+                    {{term.body|safe}}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

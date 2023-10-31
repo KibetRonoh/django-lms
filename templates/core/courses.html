@@ -1,0 +1,456 @@
+{% extends 'base.html' %}
+<!--{% load static %}-->
+{% load course_tags %}
+{% load humanize %}
+{% block content %}
+
+      <div class="rbt-page-banner-wrapper">
+              <div class="rbt-banner-image"></div>
+        <div class="rbt-banner-content">
+
+            <!-- Start Course Top  -->
+            <div class="rbt-course-top-wrapper mt--40">
+                <div class="container">
+                    <div class="row g-5 align-items-center">
+                        <div class="col-lg-5 col-md-12">
+                            <div class="rbt-sorting-list d-flex flex-wrap align-items-center">
+                                <div class="rbt-short-item switch-layout-container">
+                                    <ul class="course-switch-layout">
+                                        <li class="course-switch-item"><button class="rbt-grid-view active" title="Grid Layout"><i class="feather-grid"></i> <span class="text">Grid</span></button></li>
+                                        <li class="course-switch-item"><button class="rbt-list-view" title="List Layout"><i class="feather-list"></i> <span class="text">List</span></button></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-7 col-md-12">
+                            <div class="rbt-sorting-list d-flex flex-wrap align-items-end justify-content-start justify-content-lg-end">
+                                <div class="rbt-short-item">
+                                    <form action="{% url 'search' %}" method="GET" class="rbt-search-style me-0">
+                                        <input type="text" placeholder="Search Your Course.." name="query">
+                                        <button type="submit" class="rbt-search-btn rbt-round-btn">
+                                            <i class="feather-search"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 mt--60">
+                            <ul class="rbt-portfolio-filter filter-tab-button justify-content-start nav nav-tabs" id="rbt-myTab" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="active" id="all-tab" data-bs-toggle="tab" data-bs-target="#all" type="button" role="tab" aria-controls="all" aria-selected="true">
+                                        <span class="filter-text">All Courses</span>
+                                        <span class="course-number">{{course_count}}</span>
+                                    </button>
+                                </li>
+                                {% if featured %}
+                                <li class="nav-item" role="presentation">
+                                    <button id="featured-tab" data-bs-toggle="tab" data-bs-target="#featured" type="button" role="tab" aria-controls="featured" aria-selected="false"><span
+                                            class="filter-text">Featured</span> <span class="course-number">{{featured_count}}</span></button>
+                                </li>
+
+                                {% else %}
+                                {% endif %}
+
+                                {% if popular %}
+                                <li class="nav-item" role="presentation">
+                                    <button id="popular-tab" data-bs-toggle="tab" data-bs-target="#popular" type="button" role="tab" aria-controls="popular" aria-selected="false"><span
+                                            class="filter-text">Popular</span> <span class="course-number">{{popular_count}}</span></button>
+                                </li>
+                                {% else %}
+                                {% endif %}
+
+                                {% if latest %}
+                                <li class="nav-item" role="presentation">
+                                    <button id="latest-tab" data-bs-toggle="tab" data-bs-target="#latest" type="button" role="tab" aria-controls="latest" aria-selected="false"><span
+                                            class="filter-text">Latest</span> <span class="course-number">{{latest_count}}</span></button>
+                                </li>
+                                {% else %}
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Course Top  -->
+        </div>
+    </div>
+
+    <div class="rbt-section-overlayping-top rbt-section-gapBottom">
+        <div class="container">
+            <!-- Start Card Area -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="tab-content" id="rbt-myTabContent">
+                        <div class="tab-pane fade show active" id="all" role="tabpanel" aria-labelledby="all-tab">
+                            <div class="rbt-course-grid-column">
+
+                                <!-- Start Single Course  -->
+                                {% for course in courses %}
+                                <div class="course-grid-3">
+                                    <div class="rbt-card variation-01 rbt-hover">
+                                        <div class="rbt-card-img">
+                                            <a href="{{course.get_absolute_url}}">
+                                                <img src="{{course.featured_image.url}}" alt="Card image">
+                                                {% if course.discount == 0 %}
+                                                {% else %}
+                                                <div class="rbt-badge-3 bg-white">
+                                                    <span>{{course.discount}}%</span>
+                                                    <span>Off</span>
+                                                </div>
+                                                {% endif %}
+                                            </a>
+                                        </div>
+                                        <div class="rbt-card-body">
+                                            <div class="rbt-card-top">
+                                                {% if course.average_review == 0 %}
+                                                <div class="rbt-review">
+                                                    </div>
+                                                {% else %}
+                                                <div class="rbt-review">
+                                                   <div class="feature-sin rating">
+                                                        <i {% if course.average_review >= 1 %} style="color: orange;"{% endif %} class="fa fa-star"></i>
+                                                        <i {% if course.average_review >= 2 %} style="color: orange;"{% endif %} class="fa fa-star"></i>
+                                                        <i {% if course.average_review >= 3 %} style="color: orange;"{% endif %} class="fa fa-star"></i>
+                                                        <i {% if course.average_review >= 4 %} style="color: orange;"{% endif %} class="fa fa-star"></i>
+                                                        <i {% if course.average_review >= 5 %} style="color: orange;"{% endif %} class="fa fa-star"></i>
+                                                    </div>
+                                                    <span class="rating-count"> {{ course.average_review }}({{course.count_review}})</span>
+                                                </div>
+
+                                                {% endif %}
+                                                <div>
+                                                    <a title="Category: {{course.category}}" style="align-items: left;">{{ course.category}}&nbsp;&nbsp;</a>
+                                                </div>
+
+                                            </div>
+
+                                            <h5 class="rbt-card-title">
+                                                <a href="{{course.get_absolute_url}}">{{course.title}}</a>
+                                            </h5>
+                                            <ul class="rbt-meta">
+                                                <li><i class="feather-book"></i>{{course.video_set.all.count}} Lessons</li>
+                                                <li><i class="feather-users"></i>{{course.usercourse_set.all.count}} Student(s)</li>
+                                            </ul>
+                                            <p class="rbt-card-text" data-toggle="tooltip" title="{{course.description}}">{{course.description|safe|truncatewords:15}}</p>
+                                            <div class="rbt-author-meta mb--20">
+                                                <div class="rbt-avater">
+                                                    <a href="#">
+                                                        <img src="{{ course.author.user_image.url}}" alt="{{ course.author.username }}">
+                                                    </a>
+                                                </div>
+                                                <div class="rbt-author-info">
+                                                    By <a href="profile.html">{{course.author.username}}</a>
+                                                </div>
+                                            </div>
+
+                                            <div class="rbt-card-bottom">
+                                                {% if course.price == 0 %}
+                                                <div class="discount-time">
+                                                    <span class="rbt-badge color-success bg-color-success-opacity"> Free</span>
+                                                </div>
+                                                {% else %}
+                                                <div class="rbt-price">
+                                                    <span class="current-price">${% discount_calculation course.price course.discount %}</span>
+                                                    {% if course.discount == 0 %}
+                                                    {% else %}
+                                                    <span class="off-price">${{course.price }}</span>
+                                                    {% endif %}
+                                                </div>
+                                                {% endif %}
+                                                <a class="rbt-btn-link" href="{{course.get_absolute_url}}">Learn
+                                                    More<i class="feather-arrow-right"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                                <!-- End Single Course  -->
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="featured" role="tabpanel" aria-labelledby="featured-tab">
+                            <div class="rbt-course-grid-column">
+
+                                <!-- Start Single Course  -->
+                                {% for course in featured %}
+                                <div class="course-grid-3">
+                                    <div class="rbt-card variation-01 rbt-hover">
+                                        <div class="rbt-card-img">
+                                            <a href="{{course.get_absolute_url}}">
+                                                <img src="{{course.featured_image.url}}" alt="Card image">
+                                                {% if course.discount == 0 %}
+                                                {% else %}
+                                                <div class="rbt-badge-3 bg-white">
+                                                    <span>{{course.discount}}%</span>
+                                                    <span>Off</span>
+                                                </div>
+                                                {% endif %}
+                                            </a>
+                                        </div>
+                                        <div class="rbt-card-body">
+                                            <div class="rbt-card-top">
+                                                {% if course.average_review == 0 %}
+                                                <div class="rbt-review">
+                                                </div>
+                                                {% else %}
+                                                <div class="rbt-review">
+                                                   <div class="feature-sin rating">
+                                                        <i {% if course.average_review >= 1 %} style="color: orange;"{% endif %} class="fa fa-star"></i>
+                                                        <i {% if course.average_review >= 2 %} style="color: orange;"{% endif %} class="fa fa-star"></i>
+                                                        <i {% if course.average_review >= 3 %} style="color: orange;"{% endif %} class="fa fa-star"></i>
+                                                        <i {% if course.average_review >= 4 %} style="color: orange;"{% endif %} class="fa fa-star"></i>
+                                                        <i {% if course.average_review >= 5 %} style="color: orange;"{% endif %} class="fa fa-star"></i>
+                                                    </div>
+                                                    <span class="rating-count"> {{ course.average_review }}({{course.count_review}})</span>
+                                                </div>
+
+                                                {% endif %}
+                                                <div class="rbt-bookmark-btn">
+                                                    <a class="rbt-round-btn" title="Bookmark" href="#"><i class="feather-bookmark fa-beat-fade"></i><!--<i class="fa fa-bookmark fa-beat-fade"></i>--></a>
+                                                </div>
+                                            </div>
+
+                                            <h5 class="rbt-card-title">
+                                                <a href="{{course.get_absolute_url}}">{{course.title}}</a>
+                                            </h5>
+                                            <ul class="rbt-meta">
+                                                <li><i class="feather-book"></i>{{course.video_set.all.count}} Lessons</li>
+                                                <li><i class="feather-users"></i>{{course.usercourse_set.all.count}} Student(s)</li>
+                                            </ul>
+                                            <p class="rbt-card-text" data-toggle="tooltip" title="{{course.description}}">{{course.description|safe|truncatewords:15}}</p>
+                                            <div class="rbt-author-meta mb--20">
+                                                <div class="rbt-avater">
+                                                    <a href="#">
+                                                        <img src="{{course.author.user_image.url}}" alt="Sophia Jaymes">
+                                                    </a>
+                                                </div>
+                                                <div class="rbt-author-info">
+                                                    By <a href="profile.html">{{course.author.name}}</a> In <a href="#">{{course.category}}</a>
+                                                </div>
+                                            </div>
+
+                                            <div class="rbt-card-bottom">
+                                                {% if course.price == 0 %}
+                                                <div class="discount-time">
+                                                    <span class="rbt-badge color-success bg-color-success-opacity"> Free</span>
+                                                </div>
+                                                {% else %}
+                                                <div class="rbt-price">
+                                                    <span class="current-price">${% discount_calculation course.price course.discount %}</span>
+                                                    {% if course.discount == 0 %}
+                                                    {% else %}
+                                                    <span class="off-price">${{course.price }}</span>
+                                                    {% endif %}
+                                                </div>
+                                                {% endif %}
+                                                <a class="rbt-btn-link" href="{{course.get_absolute_url}}">Learn
+                                                    More<i class="feather-arrow-right"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                                <!-- End Single Course  -->
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="popular" role="tabpanel" aria-labelledby="popular-tab">
+                            <div class="rbt-course-grid-column">
+                                <!-- Start Single Course  -->
+                                {% for course in popular %}
+                                <div class="course-grid-3">
+                                    <div class="rbt-card variation-01 rbt-hover">
+                                        <div class="rbt-card-img">
+                                            <a href="{{course.get_absolute_url}}">
+                                                <img src="{{course.featured_image.url}}" alt="Card image">
+                                                {% if course.discount == 0 %}
+                                                {% else %}
+                                                <div class="rbt-badge-3 bg-white">
+                                                    <span>{{course.discount}}%</span>
+                                                    <span>Off</span>
+                                                </div>
+                                                {% endif %}
+                                            </a>
+                                        </div>
+                                        <div class="rbt-card-body">
+                                            <div class="rbt-card-top">
+                                                {% if course.average_review == 0 %}
+                                                <div class="rbt-review">
+                                                </div>
+                                                {% else %}
+                                                <div class="rbt-review">
+                                                   <div class="feature-sin rating">
+                                                        <i {% if course.average_review >= 1 %} style="color: orange;"{% endif %} class="fa fa-star"></i>
+                                                        <i {% if course.average_review >= 2 %} style="color: orange;"{% endif %} class="fa fa-star"></i>
+                                                        <i {% if course.average_review >= 3 %} style="color: orange;"{% endif %} class="fa fa-star"></i>
+                                                        <i {% if course.average_review >= 4 %} style="color: orange;"{% endif %} class="fa fa-star"></i>
+                                                        <i {% if course.average_review >= 5 %} style="color: orange;"{% endif %} class="fa fa-star"></i>
+                                                    </div>
+                                                    <span class="rating-count"> {{ course.average_review }}({{course.count_review}})</span>
+                                                </div>
+
+                                                {% endif %}
+                                                <div class="rbt-bookmark-btn">
+                                                    <a class="rbt-round-btn" title="Bookmark" href="#"><i class="feather-bookmark fa-beat-fade"></i><!--<i class="fa fa-bookmark fa-beat-fade"></i>--></a>
+                                                </div>
+                                            </div>
+
+                                            <h5 class="rbt-card-title">
+                                                <a href="{{course.get_absolute_url}}">{{course.title}}</a>
+                                            </h5>
+                                            <ul class="rbt-meta">
+                                                <li><i class="feather-book"></i>{{course.video_set.all.count}} Lessons</li>
+                                                <li><i class="feather-users"></i>{{course.usercourse_set.all.count}} Student(s)</li>
+                                            </ul>
+                                            <p class="rbt-card-text" data-toggle="tooltip" title="{{course.description}}">{{course.description|safe|truncatewords:15}}</p>
+                                            <div class="rbt-author-meta mb--20">
+                                                <div class="rbt-avater">
+                                                    <a href="#">
+                                                        <img src="{{course.author.user_image.url}}" alt="Sophia Jaymes">
+                                                    </a>
+                                                </div>
+                                                <div class="rbt-author-info">
+                                                    By <a href="profile.html">{{course.author.name}}</a> In <a href="#">{{course.category}}</a>
+                                                </div>
+                                            </div>
+
+                                            <div class="rbt-card-bottom">
+                                                {% if course.price == 0 %}
+                                                <div class="discount-time">
+                                                    <span class="rbt-badge color-success bg-color-success-opacity"> Free</span>
+                                                </div>
+                                                {% else %}
+                                                <div class="rbt-price">
+                                                    <span class="current-price">${% discount_calculation course.price course.discount %}</span>
+                                                    {% if course.discount == 0 %}
+                                                    {% else %}
+                                                    <span class="off-price">${{course.price }}</span>
+                                                    {% endif %}
+                                                </div>
+                                                {% endif %}
+                                                <a class="rbt-btn-link" href="{{course.get_absolute_url}}">Learn
+                                                    More<i class="feather-arrow-right"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                                <!-- End Single Course  -->
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="latest" role="tabpanel" aria-labelledby="latest-tab">
+                            <div class="rbt-course-grid-column">
+
+                                <!-- Start Single Course  -->
+                                {% for course in latest %}
+                                <div class="course-grid-3">
+                                    <div class="rbt-card variation-01 rbt-hover">
+                                        <div class="rbt-card-img">
+                                            <a href="{{course.get_absolute_url}}">
+                                                <img src="{{course.featured_image.url}}" alt="Card image">
+                                                {% if course.discount == 0 %}
+                                                {% else %}
+                                                <div class="rbt-badge-3 bg-white">
+                                                    <span>{{course.discount}}%</span>
+                                                    <span>Off</span>
+                                                </div>
+                                                {% endif %}
+                                            </a>
+                                        </div>
+                                        <div class="rbt-card-body">
+                                            <div class="rbt-card-top">
+                                                {% if course.average_review == 0 %}
+                                                <div class="rbt-review">
+                                                </div>
+                                                {% else %}
+                                                <div class="rbt-review">
+                                                   <div class="feature-sin rating">
+                                                        <i {% if course.average_review >= 1 %} style="color: orange;"{% endif %} class="fa fa-star"></i>
+                                                        <i {% if course.average_review >= 2 %} style="color: orange;"{% endif %} class="fa fa-star"></i>
+                                                        <i {% if course.average_review >= 3 %} style="color: orange;"{% endif %} class="fa fa-star"></i>
+                                                        <i {% if course.average_review >= 4 %} style="color: orange;"{% endif %} class="fa fa-star"></i>
+                                                        <i {% if course.average_review >= 5 %} style="color: orange;"{% endif %} class="fa fa-star"></i>
+                                                    </div>
+                                                    <span class="rating-count"> {{ course.average_review }}({{course.count_review}})</span>
+                                                </div>
+
+                                                {% endif %}
+                                                <div class="rbt-bookmark-btn">
+                                                    <a class="rbt-round-btn" title="Bookmark" href="#"><i class="feather-bookmark fa-beat-fade"></i><!--<i class="fa fa-bookmark fa-beat-fade"></i>--></a>
+                                                </div>
+                                            </div>
+
+                                            <h5 class="rbt-card-title">
+                                                <a href="{{course.get_absolute_url}}">{{course.title}}</a>
+                                            </h5>
+                                            <ul class="rbt-meta">
+                                                <li><i class="feather-book"></i>{{course.video_set.all.count}} Lessons</li>
+                                                <li><i class="feather-users"></i>{{course.usercourse_set.all.count}} Student(s)</li>
+                                            </ul>
+                                            <p class="rbt-card-text" data-toggle="tooltip" title="{{course.description}}">{{course.description|safe|truncatewords:15}}</p>
+                                            <div class="rbt-author-meta mb--20">
+                                                <div class="rbt-avater">
+                                                    <a href="#">
+                                                        <img src="{{course.author.user_image.url}}" alt="Sophia Jaymes">
+                                                    </a>
+                                                </div>
+                                                <div class="rbt-author-info">
+                                                    By <a href="profile.html">{{course.author.name}}</a> In <a href="#">{{course.category}}</a>
+                                                </div>
+                                            </div>
+
+                                            <div class="rbt-card-bottom">
+                                                {% if course.price == 0 %}
+                                                <div class="discount-time">
+                                                    <span class="rbt-badge color-success bg-color-success-opacity"> Free</span>
+                                                </div>
+                                                {% else %}
+                                                <div class="rbt-price">
+                                                    <span class="current-price">${% discount_calculation course.price course.discount %}</span>
+                                                    {% if course.discount == 0 %}
+                                                    {% else %}
+                                                    <span class="off-price">${{course.price }}</span>
+                                                    {% endif %}
+                                                </div>
+                                                {% endif %}
+                                                <a class="rbt-btn-link" href="{{course.get_absolute_url}}">Learn
+                                                    More<i class="feather-arrow-right"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                                <!-- End Single Course  -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+     <div class="col-lg-11 mt--60">
+         <nav>
+             {% if courses.has_other_pages %}
+             <ul class="rbt-pagination">
+                 {% if courses.has_previous %}
+                 <li><a href="?page={{courses.previous_page_number}}" aria-label="Previous"><i class="feather-chevron-left"></i></a></li>
+                 {% else %}
+
+                 {% endif %}
+                 {% for i in courses.paginator.page_range %}
+                     {% if courses.number == i %}
+                        <li class="active"><a>{{i}}</a></li>
+                     {% else %}
+                        <li><a href="?page={{i}}">{{i}}</a></li>
+                     {% endif %}
+                 {% endfor %}
+                 {% if courses.has_next %}
+                    <li><a href="?page={{courses.next_page_number}}" aria-label="Next"><i class="feather-chevron-right"></i></a></li>
+                 {% else %}
+                    <li><a href="#" aria-label="Next"><i class="feather-chevron-right"></i></a></li>
+                 {% endif %}
+             </ul>
+             {% endif %}
+         </nav>
+     </div>
+
+{% endblock %}

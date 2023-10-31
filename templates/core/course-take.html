@@ -1,0 +1,196 @@
+
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Lesson - Online Courses & Education Bootstrap5 Template</title>
+    <meta name="robots" content="noindex, follow" />
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.png">
+
+<!-- CSS
+	============================================ -->
+    <link rel="stylesheet" href="{% static 'assets/css/vendor/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/vendor/slick.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/vendor/slick-theme.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/plugins/sal.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/plugins/feather.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/plugins/fontawesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/plugins/euclid-circulara.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/plugins/swiper.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/plugins/magnify.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/plugins/odometer.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/plugins/animation.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/plugins/bootstrap-select.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/plugins/jquery-ui.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/plugins/magnigy-popup.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/plugins/plyr.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+</head>
+
+<body class="rbt-header-sticky">
+
+    <div class="rbt-lesson-area bg-color-white">
+        <div class="rbt-lesson-content-wrapper">
+            <div class="rbt-lesson-leftsidebar">
+                <div class="rbt-course-feature-inner rbt-search-activation">
+                    <div class="section-title">
+                        <h4 class="rbt-title-style-3">Course Content</h4>
+                    </div>
+                    <hr class="mt--10">
+                    <div class="rbt-accordion-style rbt-accordion-02 for-right-content accordion">
+                        <div class="accordion" id="accordionExampleb2">
+                            {% for section in course.section_set.all%}
+                            <div class="accordion-item card">
+                                <h2 class="accordion-header card-header" id="headingTwo1">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" aria-expanded="true" data-bs-target="#id{{section.id}}" aria-controls="collapseTwo1">
+                                        {{ section.name }} <span class="rbt-badge-5 ml--10">1/2</span>
+                                    </button>
+                                </h2>
+                                {% for video in section.video_set.all %}
+                                <div id="id{{video.section.id}}" class="accordion-collapse collapse show" aria-labelledby="headingTwo1">
+                                    <div class="accordion-body card-body">
+                                        <ul class="rbt-course-main-content liststyle">
+                                            <li>
+                                                {% if check_enroll is not None %}
+                                                <a href="?lecture={{video.id}}">
+                                                    <div class="course-content-left">
+                                                        <i class="feather-play-circle"></i> <span class="text">{{video.title}}</span>
+                                                    </div>
+                                                    <div class="course-content-right">
+                                                        <span class="min-lable">{{video.time_duration}} min</span>
+                                                    </div>
+                                                </a>
+                                                {% else %}
+                                                    {% if video.preview == True %}
+                                                    <a href="?lecture={{video.id}}">
+                                                        <div class="course-content-left">
+                                                            <i class="feather-play-circle"></i> <span class="text">{{video.title}}</span>
+                                                        </div>
+                                                        <div class="course-content-right">
+                                                            <span class="rbt-badge variation-03 bg-primary-opacity"><i class="feather-eye"></i> Preview</span>
+                                                            <span class="min-lable">{{video.time_duration}} min</span>
+                                                        </div>
+                                                    </a>
+                                                    {% else %}
+                                                    <a href="#" aria-disabled="true">
+                                                        <div class="course-content-left">
+                                                            <i class="feather-play-circle"></i> <span class="text" data-toggle="tooltip" title="Enroll to this Course First">{{video.title}}</span>
+                                                        </div>
+                                                        <div class="course-content-right">
+                                                            <span class="min-lable">{{video.time_duration}} min</span>
+                                                        </div>
+                                                    </a>
+                                                    {% endif%}
+                                                {% endif %}
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="rbt-lesson-rightsidebar overflow-hidden lesson-video">
+                <div class="lesson-top-bar">
+                    <div class="lesson-top-left">
+                        <div class="rbt-lesson-toggle">
+                            <button class="lesson-toggle-active btn-round-white-opacity" title="Toggle Sidebar"><i class="feather-arrow-left"></i></button>
+                        </div>
+                        {% if video.id %}
+                        <h5>{{ video.section.name}} >>> {{video.title}}</h5>
+                        {% else %}
+                        <h5>{{course.title}}</h5>
+                        {% endif %}
+                    </div>
+                    <div class="lesson-top-right">
+                        <div class="rbt-btn-close">
+                            <a href="{{course.get_absolute_url}}" title="Go Back to Course Details" class="rbt-round-btn"><i class="feather-x"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="inner">
+                    {% if video.id %}
+                    <div class="plyr__video-embed rbtplayer">
+                        <iframe src="https://www.youtube.com/embed/{{video.video_url}}" allowfullscreen allow="autoplay"></iframe>
+                    </div>
+                    {% else %}
+                    <div class="plyr__video-embed rbtplayer">
+                        <iframe src="https://www.youtube.com/embed/{{course.featured_video}}" allowfullscreen allow="autoplay"></iframe>
+                    </div>
+                    {% endif %}
+                    <div class="content">
+                        <div class="section-title">
+                            {% if check_review is None %}
+                            <div class="bg-color-extra2 ptb--15 overflow-hidden">
+                                <div class="rbt-button-group">
+
+                                    <a class="rbt-btn icon-hover btn-md" href="{% url 'review' course.slug%}">
+                                        <span class="btn-text">Rate this Course</span>
+                                        <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+                                    </a>
+                                </div>
+                            </div>
+                            {% else %}
+
+                            {% endif %}
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="rbt-progress-parent">
+        <svg class="rbt-back-circle svg-inner" width="100%" height="100%" viewBox="-1 -1 102 102">
+            <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" />
+        </svg>
+    </div>
+<!-- JS
+============================================ -->
+<!-- Modernizer JS -->
+<script src="{% static 'assets/js/vendor/modernizr.min.js' %}"></script>
+<!-- jQuery JS -->
+<script src="{% static 'assets/js/vendor/jquery.js' %}"></script>
+<!-- Bootstrap JS -->
+<script src="{% static 'assets/js/vendor/bootstrap.min.js' %}"></script>
+<!-- sal.js' %} -->
+<script src="{% static 'assets/js/vendor/sal.js' %}"></script>
+<script src="{% static 'assets/js/vendor/swiper.js' %}"></script>
+<script src="{% static 'assets/js/vendor/magnify.min.js' %}"></script>
+<script src="{% static 'assets/js/vendor/jquery-appear.js' %}"></script>
+<script src="{% static 'assets/js/vendor/odometer.js' %}"></script>
+<script src="{% static 'assets/js/vendor/backtotop.js' %}"></script>
+<script src="{% static 'assets/js/vendor/isotop.js' %}"></script>
+<script src="{% static 'assets/js/vendor/imageloaded.js' %}"></script>
+
+<script src="{% static 'assets/js/vendor/wow.js' %}"></script>
+<script src="{% static 'assets/js/vendor/waypoint.min.js' %}"></script>
+<script src="{% static 'assets/js/vendor/easypie.js' %}"></script>
+<script src="{% static 'assets/js/vendor/text-type.js' %}"></script>
+<script src="{% static 'assets/js/vendor/jquery-one-page-nav.js' %}"></script>
+<script src="{% static 'assets/js/vendor/bootstrap-select.min.js' %}"></script>
+<script src="{% static 'assets/js/vendor/jquery-ui.js' %}"></script>
+<script src="{% static 'assets/js/vendor/magnify-popup.min.js' %}"></script>
+<script src="{% static 'assets/js/vendor/paralax-scroll.js' %}"></script>
+<script src="{% static 'assets/js/vendor/paralax.min.js' %}"></script>
+<script src="{% static 'assets/js/vendor/countdown.js' %}"></script>
+<script src="{% static 'assets/js/vendor/plyr.js' %}"></script>
+<!-- Main JS -->
+<script src="{% static 'assets/js/main.js' %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js"></script>
+
+</body>
+
+</html>

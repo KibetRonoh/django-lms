@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content%}
+    <div class="rbt-elements-area bg-color-white rbt-section-gap">
+        <div class="container mb-11">
+            <div class="row gx-0">
+                <div class="col-md-7 col-xl-6 mx-auto">
+                    <div class="rbt-contact-form contact-form-style-1 max-width-auto">
+                        <h3 class="title">Login</h3>
+                        {% include 'partials/_alerts.html' %}
+                        <form class="max-width-auto" method="post" action="{% url 'login' %}">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <input name="username" type="text" required/>
+                                <label>Username *</label>
+                                <span class="focus-border"></span>
+                            </div>
+                            <div class="form-group">
+                                <input name="password" type="password" required>
+                                <label>Password *</label>
+                                <span class="focus-border"></span>
+                            </div>
+
+                            <div class="row mb--30">
+                                <div class="col-lg-6">
+                                    <div class="rbt-checkbox">
+                                        <input type="checkbox" id="rememberme" name="rememberme">
+                                        <label for="rememberme">Remember me</label>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="rbt-lost-password text-end">
+                                        <a class="rbt-btn-link" href="{%url 'password_reset' %}">Lost your password?</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-submit-group">
+                                <button type="submit" class="rbt-btn btn-md btn-gradient hover-icon-reverse w-100">
+                                    <span class="icon-reverse-wrapper">
+                                        <span class="btn-text">Log In</span>
+                                    <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+                                    <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+                                    </span>
+                                </button>
+                            </div>
+
+                            <div class="col-lg-10">
+                                <div class="rbt-lost-password text-end">
+                                    Dont have an account? <a class="rbt-btn-link" href="{%url 'register' %}">Sign Up Here</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

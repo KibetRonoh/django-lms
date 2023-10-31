@@ -1,0 +1,48 @@
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rating</title>
+    <link rel="stylesheet" href="{% static 'assets/css/rating.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script src="{% static 'assets/js/rating.js' %}"></script>
+</head>
+<body>
+    <div class="container1">
+        <a href="{{ course.get_absolute_url }}"> <h4 style="color: orange;">Course: {{course.title}}</h4></a>
+        <div class="container2">
+            <div class="post2">
+                <div class="text2">Thanks for your rating</div>
+            </div>
+            <form method="GET" action="{% url 'submit-review' course.slug%}">
+                <h4 style="color: silver">{{user.first_name}} {{user.last_name}}</h4>
+                <h4 style="color: silver">{{user.email}}</h4>
+                <h4 style="color: silver">@{{user.username}}</h4>
+                <div class="star-widget2">
+                    <input type="radio" name="rating" value="5" id="rate-5" required>
+                    <label for="rate-5" class="fas fa-star"></label>
+                    <input type="radio" name="rating" value="4" id="rate-4">
+                    <label for="rate-4" class="fas fa-star"></label>
+                    <input type="radio" name="rating" value="3" id="rate-3">
+                    <label for="rate-3" class="fas fa-star"></label>
+                    <input type="radio" name="rating" value="2" id="rate-2">
+                    <label for="rate-2" class="fas fa-star"></label>
+                    <input type="radio" name="rating" value="1" id="rate-1">
+                    <label for="rate-1" class="fas fa-star"></label>
+                    <div>
+
+                        <header></header>
+                        <div class="textarea2">
+                            <textarea cols="30" placeholder="Describe your experience..." name="comment"></textarea>
+                        </div>
+                        <div class="btn2">
+                            <button type="submit">Post</button>
+                        </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
